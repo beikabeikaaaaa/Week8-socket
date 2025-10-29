@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Clicker App</title>
+  <style>
+   
+    body { font-family: sans-serif; display: grid; place-items: center; height: 80vh; background: #eee; }
+    #main { text-align: center; }
+    #counter { font-size: 6rem; font-weight: bold; color: #333; }
+    button { font-size: 2rem; padding: 15px 30px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div id="main">
+    <h1>Click Together!</h1>
+    
+    <div id="counter">0</div>
+    
+    <button id="clickButton">Click Me!</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+
+    const socket = io();
+
+    const counterDiv = document.getElementById('counter');
+    const myButton = document.getElementById('clickButton');
+
+    myButton.addEventListener('click', () => {
+     
+      console.log('Button clicked, sending message to server...');
+      
+      socket.emit('clientClick');
+    });
+
+    socket.on('updateCounter', (newCount) => {
+     
+      console.log('Received update from server, new count is: ' + newCount);
+     
+      counterDiv.innerText = newCount;
+    });
+
+  </script>
+
+</body>
+</html>
